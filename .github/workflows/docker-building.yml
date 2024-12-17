@@ -1,0 +1,39 @@
+name: Docker Build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker Login
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "21"
+          distribution: "adopt"
+          cache: maven
+
+      - name: Maven Build
+        working-directory: .
+        run: mvn clean package
+
+      - name: Docker Build
+        working-directory: ./compose-stack
+        run: docker compose build
+
+      - name: Docker Push
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/taskflowing-api:latest ${{ secrets.DOCKER_USERNAME }}/taskflowing-api:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/taskflowing-api:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/taskflowing-api:latest
