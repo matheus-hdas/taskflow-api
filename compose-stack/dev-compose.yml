@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: "postgres:16.0-alpine3.18"
+    env_file:
+      - ../.env.development
+    ports:
+      - "5432:5432"
+    networks:
+      - default-network
+    volumes:
+      - taskflowing_data:/var/lib/taskflowing
+
+networks:
+  default-network:
+    driver: bridge
+volumes:
+  taskflowing_data:
