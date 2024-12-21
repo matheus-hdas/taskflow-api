@@ -33,7 +33,6 @@ public class Project {
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
-
     }
 
     public Project(UUID id, String name, String description) {
