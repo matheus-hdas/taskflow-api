@@ -1,7 +1,7 @@
 package com.matheushdas.taskflowingapi.model.utility;
 
 public enum Status {
-    OPEN("IN_PROGRESS"), CLOSED("FINISHED");
+    OPEN("PENDING"), CLOSED("FINISHED");
 
     private final String value;
 
