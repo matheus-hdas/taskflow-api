@@ -30,12 +30,13 @@ public class ProjectMapper {
                 data.getName(),
                 data.getDescription(),
                 data.getStatus(),
+                data.getTasks(),
                 data.getCreatedAt(),
                 data.getUpdatedAt()
         );
     }
 
     public Page<ProjectResponse> toResponsePage(Page<Project> data) {
-        return data.map(project -> this.toResponse(project));
+        return data.map(this::toResponse);
     }
 }

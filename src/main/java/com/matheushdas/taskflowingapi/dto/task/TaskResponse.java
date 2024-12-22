@@ -1,21 +1,16 @@
-package com.matheushdas.taskflowingapi.dto.project;
+package com.matheushdas.taskflowingapi.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.matheushdas.taskflowingapi.model.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-public class ProjectResponse extends RepresentationModel<ProjectResponse> {
+public class TaskResponse extends RepresentationModel<TaskResponse> {
     @JsonProperty("id")
     private UUID key;
 
@@ -28,8 +23,8 @@ public class ProjectResponse extends RepresentationModel<ProjectResponse> {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("tasks")
-    private List<Task> tasks;
+    @JsonProperty("project_id")
+    private UUID projectId;
 
     @JsonProperty("created_at")
     private LocalDateTime createdAt;

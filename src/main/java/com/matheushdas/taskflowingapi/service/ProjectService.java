@@ -47,8 +47,15 @@ public class ProjectService {
     }
 
     public ProjectResponse findById(UUID id) {
-        return projectMapper
+        ProjectResponse response = projectMapper
                 .toResponse(projectRepository.findById(id).orElseThrow());
+
+        response.add(
+                linkTo(methodOn(ProjectController.class)
+                        .getProjectById(response.getKey()))
+                        .withSelfRel());
+
+        return response;
     }
 
     public ProjectResponse save(CreateProjectRequest project) {
