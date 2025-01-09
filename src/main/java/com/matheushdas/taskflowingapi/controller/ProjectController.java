@@ -51,6 +51,13 @@ public class ProjectController {
                 .body(projectService.save(project));
     }
 
+    @PatchMapping("/{id}/start")
+    public ResponseEntity<?> openProject(@PathVariable UUID id) {
+        return projectService.startProject(id) ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.internalServerError().build();
+    }
+
     @PatchMapping("/{id}/close")
     public ResponseEntity<?> finishProject(@PathVariable UUID id) {
         return projectService.finishProject(id) ?

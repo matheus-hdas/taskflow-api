@@ -74,14 +74,19 @@ public class ProjectService {
     }
 
     @Transactional
+    public boolean startProject(UUID id) {
+        return projectRepository
+                .changeStateByProjectId(id, Status.IN_PROGRESS.getValue()) == 1;
+    }
+
+    @Transactional
     public boolean finishProject(UUID id) {
-        int rowsAffected = projectRepository.changeStateByProjectId(id, Status.CLOSED.getValue());
-        return rowsAffected == 1;
+        return projectRepository
+                .changeStateByProjectId(id, Status.CLOSED.getValue()) == 1;
     }
 
     @Transactional
     public boolean reopenProject(UUID id) {
-        int rowsAffected = projectRepository.changeStateByProjectId(id, Status.PENDING.getValue());
-        return rowsAffected == 1;
+        return startProject(id);
     }
 }

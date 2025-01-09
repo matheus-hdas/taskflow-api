@@ -51,6 +51,13 @@ public class TaskController {
                 .body(taskService.save(task));
     }
 
+    @PatchMapping("/{id}/start")
+    public ResponseEntity<?> startTask(@PathVariable UUID id) {
+        return taskService.startTask(id) ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.internalServerError().build();
+    }
+
     @PatchMapping("/{id}/close")
     public ResponseEntity<?> finishTask(@PathVariable UUID id) {
         return taskService.finishTask(id) ?

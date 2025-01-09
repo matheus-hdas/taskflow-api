@@ -74,12 +74,19 @@ public class TaskService {
     }
 
     @Transactional
+    public boolean startTask(UUID id) {
+        return taskRepository
+                .changeStateByTaskId(id, Status.IN_PROGRESS.getValue()) == 1;
+    }
+
+    @Transactional
     public boolean finishTask(UUID id) {
-        return taskRepository.changeStateByTaskId(id, Status.CLOSED.getValue()) == 1;
+        return taskRepository
+                .changeStateByTaskId(id, Status.CLOSED.getValue()) == 1;
     }
 
     @Transactional
     public boolean reopenTask(UUID id) {
-        return taskRepository.changeStateByTaskId(id, Status.PENDING.getValue()) == 1;
+        return startTask(id);
     }
 }
