@@ -70,4 +70,10 @@ public class ProjectController {
                 ResponseEntity.noContent().build() :
                 ResponseEntity.internalServerError().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable UUID id) {
+        projectService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -102,4 +102,10 @@ public class ProjectService {
         return projectRepository
                 .changeStateByProjectId(id, Status.IN_PROGRESS.getValue()) == 1;
     }
+
+    public void delete(UUID id) {
+        if(projectRepository.existsById(id)) {
+            projectRepository.deleteById(id);
+        }
+    }
 }

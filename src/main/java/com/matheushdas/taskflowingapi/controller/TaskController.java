@@ -77,4 +77,10 @@ public class TaskController {
                 ResponseEntity.noContent().build() :
                 ResponseEntity.internalServerError().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTask(@PathVariable UUID id) {
+        taskService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

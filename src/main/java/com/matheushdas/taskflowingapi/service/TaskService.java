@@ -109,4 +109,10 @@ public class TaskService {
     public boolean reopenTask(UUID id) {
         return startTask(id);
     }
+
+    public void delete(UUID id) {
+        if(taskRepository.existsById(id)) {
+            taskRepository.deleteById(id);
+        }
+    }
 }
