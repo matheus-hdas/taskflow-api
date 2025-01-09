@@ -1,8 +1,10 @@
 package com.matheushdas.taskflowingapi.service;
 
 import com.matheushdas.taskflowingapi.controller.TaskController;
+import com.matheushdas.taskflowingapi.dto.project.UpdateProjectRequest;
 import com.matheushdas.taskflowingapi.dto.task.CreateTaskRequest;
 import com.matheushdas.taskflowingapi.dto.task.TaskResponse;
+import com.matheushdas.taskflowingapi.dto.task.UpdateTaskRequest;
 import com.matheushdas.taskflowingapi.model.utility.Status;
 import com.matheushdas.taskflowingapi.persistence.TaskRepository;
 import com.matheushdas.taskflowingapi.util.mapper.TaskMapper;
@@ -63,6 +65,24 @@ public class TaskService {
                 taskRepository.save(
                         taskMapper.toEntity(task)
                 )
+        );
+
+        response.add(
+                linkTo(
+                        methodOn(TaskController.class)
+                                .getTaskById(response.getKey()))
+                        .withSelfRel());
+        return response;
+    }
+
+    public TaskResponse update(UpdateTaskRequest task) {
+        TaskResponse response = taskMapper.toResponse(
+                taskRepository.findById(task.id())
+                        .map(toUpdate -> {
+                            toUpdate.setName(task.name());
+                            toUpdate.setDescription(task.description());
+                            return taskRepository.save(toUpdate);
+                        }).orElseThrow()
         );
 
         response.add(

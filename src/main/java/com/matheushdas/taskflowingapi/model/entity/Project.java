@@ -41,7 +41,7 @@ public class Project {
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = Status.PENDING.getValue();
+        this.status = Status.IN_PROGRESS.getValue();
     }
 
     public Project(UUID id, String name, String description) {

@@ -3,6 +3,7 @@ package com.matheushdas.taskflowingapi.service;
 import com.matheushdas.taskflowingapi.controller.ProjectController;
 import com.matheushdas.taskflowingapi.dto.project.CreateProjectRequest;
 import com.matheushdas.taskflowingapi.dto.project.ProjectResponse;
+import com.matheushdas.taskflowingapi.dto.project.UpdateProjectRequest;
 import com.matheushdas.taskflowingapi.model.utility.Status;
 import com.matheushdas.taskflowingapi.persistence.ProjectRepository;
 import com.matheushdas.taskflowingapi.util.mapper.ProjectMapper;
@@ -73,10 +74,21 @@ public class ProjectService {
         return response;
     }
 
-    @Transactional
-    public boolean startProject(UUID id) {
-        return projectRepository
-                .changeStateByProjectId(id, Status.IN_PROGRESS.getValue()) == 1;
+    public ProjectResponse update(UpdateProjectRequest project) {
+        ProjectResponse response = projectMapper.toResponse(
+                projectRepository.findById(project.id())
+                        .map(toUpdate -> {
+                            toUpdate.setName(project.name());
+                            toUpdate.setDescription(project.description());
+                            return projectRepository.save(toUpdate);
+                        }).orElseThrow()
+        );
+        response.add(
+                linkTo(methodOn(ProjectController.class)
+                        .getProjectById(response.getKey()))
+                        .withSelfRel());
+
+        return response;
     }
 
     @Transactional
@@ -87,6 +99,7 @@ public class ProjectService {
 
     @Transactional
     public boolean reopenProject(UUID id) {
-        return startProject(id);
+        return projectRepository
+                .changeStateByProjectId(id, Status.IN_PROGRESS.getValue()) == 1;
     }
 }

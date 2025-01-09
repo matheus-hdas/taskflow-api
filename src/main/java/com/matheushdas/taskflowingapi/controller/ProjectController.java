@@ -2,6 +2,7 @@ package com.matheushdas.taskflowingapi.controller;
 
 import com.matheushdas.taskflowingapi.dto.project.CreateProjectRequest;
 import com.matheushdas.taskflowingapi.dto.project.ProjectResponse;
+import com.matheushdas.taskflowingapi.dto.project.UpdateProjectRequest;
 import com.matheushdas.taskflowingapi.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -51,11 +52,9 @@ public class ProjectController {
                 .body(projectService.save(project));
     }
 
-    @PatchMapping("/{id}/start")
-    public ResponseEntity<?> openProject(@PathVariable UUID id) {
-        return projectService.startProject(id) ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.internalServerError().build();
+    @PutMapping
+    public ResponseEntity<ProjectResponse> updateProject(@RequestBody UpdateProjectRequest project) {
+        return ResponseEntity.ok(projectService.update(project));
     }
 
     @PatchMapping("/{id}/close")

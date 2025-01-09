@@ -2,6 +2,7 @@ package com.matheushdas.taskflowingapi.controller;
 
 import com.matheushdas.taskflowingapi.dto.task.CreateTaskRequest;
 import com.matheushdas.taskflowingapi.dto.task.TaskResponse;
+import com.matheushdas.taskflowingapi.dto.task.UpdateTaskRequest;
 import com.matheushdas.taskflowingapi.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -49,6 +50,11 @@ public class TaskController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(taskService.save(task));
+    }
+
+    @PutMapping
+    public ResponseEntity<TaskResponse> updateTask(@RequestBody UpdateTaskRequest task) {
+        return ResponseEntity.ok(taskService.update(task));
     }
 
     @PatchMapping("/{id}/start")
