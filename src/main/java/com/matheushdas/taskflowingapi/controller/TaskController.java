@@ -52,9 +52,9 @@ public class TaskController {
                 .body(taskService.save(task));
     }
 
-    @PutMapping
-    public ResponseEntity<TaskResponse> updateTask(@RequestBody UpdateTaskRequest task) {
-        return ResponseEntity.ok(taskService.update(task));
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable UUID id,@RequestBody UpdateTaskRequest task) {
+        return ResponseEntity.ok(taskService.update(id, task));
     }
 
     @PatchMapping("/{id}/start")

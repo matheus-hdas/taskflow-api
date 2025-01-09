@@ -74,9 +74,9 @@ public class ProjectService {
         return response;
     }
 
-    public ProjectResponse update(UpdateProjectRequest project) {
+    public ProjectResponse update(UUID id, UpdateProjectRequest project) {
         ProjectResponse response = projectMapper.toResponse(
-                projectRepository.findById(project.id())
+                projectRepository.findById(id)
                         .map(toUpdate -> {
                             toUpdate.setName(project.name());
                             toUpdate.setDescription(project.description());

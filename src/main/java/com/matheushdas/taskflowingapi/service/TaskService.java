@@ -75,9 +75,9 @@ public class TaskService {
         return response;
     }
 
-    public TaskResponse update(UpdateTaskRequest task) {
+    public TaskResponse update(UUID id, UpdateTaskRequest task) {
         TaskResponse response = taskMapper.toResponse(
-                taskRepository.findById(task.id())
+                taskRepository.findById(id)
                         .map(toUpdate -> {
                             toUpdate.setName(task.name());
                             toUpdate.setDescription(task.description());

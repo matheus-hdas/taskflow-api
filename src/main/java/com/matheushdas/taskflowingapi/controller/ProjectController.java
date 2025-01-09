@@ -52,9 +52,9 @@ public class ProjectController {
                 .body(projectService.save(project));
     }
 
-    @PutMapping
-    public ResponseEntity<ProjectResponse> updateProject(@RequestBody UpdateProjectRequest project) {
-        return ResponseEntity.ok(projectService.update(project));
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable UUID id, @RequestBody UpdateProjectRequest project) {
+        return ResponseEntity.ok(projectService.update(id, project));
     }
 
     @PatchMapping("/{id}/close")
