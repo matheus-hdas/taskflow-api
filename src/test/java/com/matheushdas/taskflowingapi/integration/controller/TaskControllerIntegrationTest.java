@@ -126,6 +126,19 @@ public class TaskControllerIntegrationTest extends IntegrationTestWithContainers
                 assertEquals("PENDING", task.getStatus());
             }
         }
+
+        @Test
+        void shouldReturnTasksPageWithValidHateoasLinkWhenRequested() throws JsonProcessingException {
+            String body = given().spec(specification)
+                    .queryParam("page", 0)
+                    .queryParam("size", 12)
+                    .when().get()
+                    .then().statusCode(200)
+                    .extract().body().asString();
+
+            assertTrue(body.contains("_links\":{\"self\":{\"href\":\"http://localhost:8888/api/task?page=0&size=12&direction=asc"));
+            assertTrue(body.contains("page\":{\"size\":12,\"totalElements\":1,\"totalPages\":1,\"number\":0"));
+        }
     }
 
     @Nested
@@ -252,6 +265,19 @@ public class TaskControllerIntegrationTest extends IntegrationTestWithContainers
             TaskResponse response = objectMapper.readValue(body, TaskResponse.class);
 
             assertEquals("IN_PROGRESS", response.getStatus());
+        }
+    }
+
+    @Nested
+    @Order(8)
+    class afterTests {
+        @Test
+        void deleteMockProject() {
+            given().spec(specification)
+                    .basePath("/api/project")
+                    .pathParam("id", createdProject.getKey())
+                    .when().delete("/{id}")
+                    .then().statusCode(204);
         }
     }
 }

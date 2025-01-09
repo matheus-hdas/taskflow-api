@@ -103,6 +103,22 @@ public class ProjectControllerIntegrationTest extends IntegrationTestWithContain
                 assertEquals("PENDING", project.getStatus());
             }
         }
+
+        @Test
+        void shouldReturnProjectsPageWithValidHateoasLinkWhenRequested() throws JsonProcessingException {
+            String body = given().spec(specification)
+                    .queryParam("page", 0)
+                    .queryParam("size", 12)
+                    .queryParam("direction", "asc")
+                    .when().get()
+                    .then().statusCode(200)
+                    .extract().body().asString();
+
+            System.out.println(body);
+
+            assertTrue(body.contains("_links\":{\"self\":{\"href\":\"http://localhost:8888/api/project?page=0&size=12&direction=asc"));
+            assertTrue(body.contains("page\":{\"size\":12,\"totalElements\":1,\"totalPages\":1,\"number\":0"));
+        }
     }
 
     @Nested
@@ -207,6 +223,19 @@ public class ProjectControllerIntegrationTest extends IntegrationTestWithContain
             ProjectResponse response = objectMapper.readValue(body, ProjectResponse.class);
 
             assertEquals("IN_PROGRESS", response.getStatus());
+        }
+    }
+
+    @Nested
+    @Order(7)
+    class afterTests {
+        @Test
+        void deleteMockProject() {
+            given().spec(specification)
+                    .basePath("/api/project")
+                    .pathParam("id", createdProject.getKey())
+                    .when().delete("/{id}")
+                    .then().statusCode(204);
         }
     }
 }
