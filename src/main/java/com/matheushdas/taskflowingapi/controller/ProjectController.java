@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/project")
 @AllArgsConstructor
+@RequestMapping("/api/project")
 public class ProjectController {
     private ProjectService projectService;
 

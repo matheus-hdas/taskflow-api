@@ -1,5 +1,6 @@
 package com.matheushdas.taskflowingapi.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheushdas.taskflowingapi.model.utility.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,20 +25,23 @@ public class Project {
     private String status;
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnore
     private List<Task> tasks;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @JsonIgnore
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = Status.OPEN.getValue();
+        this.status = Status.PENDING.getValue();
     }
 
     public Project(UUID id, String name, String description) {

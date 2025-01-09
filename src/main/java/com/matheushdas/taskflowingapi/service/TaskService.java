@@ -80,6 +80,6 @@ public class TaskService {
 
     @Transactional
     public boolean reopenTask(UUID id) {
-        return taskRepository.changeStateByTaskId(id, Status.OPEN.getValue()) == 1;
+        return taskRepository.changeStateByTaskId(id, Status.PENDING.getValue()) == 1;
     }
 }

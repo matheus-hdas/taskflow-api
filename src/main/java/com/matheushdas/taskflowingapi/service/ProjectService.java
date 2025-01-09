@@ -81,7 +81,7 @@ public class ProjectService {
 
     @Transactional
     public boolean reopenProject(UUID id) {
-        int rowsAffected = projectRepository.changeStateByProjectId(id, Status.OPEN.getValue());
+        int rowsAffected = projectRepository.changeStateByProjectId(id, Status.PENDING.getValue());
         return rowsAffected == 1;
     }
 }

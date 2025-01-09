@@ -28,9 +28,7 @@ public class TaskMapper {
                 data.getName(),
                 data.getDescription(),
                 data.getStatus(),
-                data.getProject().getId(),
-                data.getCreatedAt(),
-                data.getUpdatedAt()
+                data.getProject()
         );
     }
 

@@ -30,9 +30,7 @@ public class ProjectMapper {
                 data.getName(),
                 data.getDescription(),
                 data.getStatus(),
-                data.getTasks(),
-                data.getCreatedAt(),
-                data.getUpdatedAt()
+                data.getTasks()
         );
     }
 

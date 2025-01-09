@@ -1,15 +1,18 @@
 package com.matheushdas.taskflowingapi.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.matheushdas.taskflowingapi.model.entity.Project;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "name", "description", "status", "inserted_at", "_links"})
 public class TaskResponse extends RepresentationModel<TaskResponse> {
     @JsonProperty("id")
     private UUID key;
@@ -23,12 +26,6 @@ public class TaskResponse extends RepresentationModel<TaskResponse> {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("project_id")
-    private UUID projectId;
-
-    @JsonProperty("created_at")
-    private LocalDateTime createdAt;
-
-    @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    @JsonProperty("inserted_at")
+    private Project project;
 }

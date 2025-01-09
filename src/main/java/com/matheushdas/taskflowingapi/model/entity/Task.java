@@ -23,7 +23,7 @@ public class Task {
     private String description;
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id", nullable = false)
     @JsonIgnore
     private Project project;
@@ -42,7 +42,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.project = project;
-        this.status = Status.OPEN.getValue();
+        this.status = Status.PENDING.getValue();
     }
 
     public Task(UUID id, String name, String description, Project project) {
