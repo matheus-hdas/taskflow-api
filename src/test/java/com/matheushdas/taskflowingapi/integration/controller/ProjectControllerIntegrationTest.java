@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.matheushdas.taskflowingapi.dto.auth.LoginRequest;
+import com.matheushdas.taskflowingapi.dto.auth.LoginResponse;
 import com.matheushdas.taskflowingapi.dto.project.CreateProjectRequest;
 import com.matheushdas.taskflowingapi.dto.project.ProjectResponse;
 import com.matheushdas.taskflowingapi.dto.project.UpdateProjectRequest;
@@ -32,13 +34,32 @@ public class ProjectControllerIntegrationTest extends IntegrationTestWithContain
     public static void setUp() {
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
 
-        specification = new RequestSpecBuilder()
-                .setBasePath("/api/project")
-                .setPort(8888)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
+    @Nested
+    @Order(0)
+    class beforeTests {
+        @Test
+        void authentication() {
+            LoginRequest request = new LoginRequest("TestUsername", "testpassword");
+
+            String response = given()
+                    .basePath("/auth/login")
+                    .port(8888)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(request)
+                    .when().post()
+                    .then().statusCode(200)
+                    .extract().body().as(LoginResponse.class).accessToken();
+
+            specification = new RequestSpecBuilder()
+                    .addHeader("Authorization", "Bearer " + response)
+                    .setBasePath("/api/project")
+                    .setPort(8888)
+                    .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                    .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                    .build();
+        }
     }
 
     @Nested
