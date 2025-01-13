@@ -43,4 +43,13 @@ public class AuthService {
 
         return loginTokenProvider.generateAuthorizationToken(username, user.getRoles());
     }
+
+    public LoginResponse refreshToken(String username, String refreshToken) {
+        User user = userRepository.findByUsernameOrEmail(username)
+                .orElseThrow();
+
+        if(user == null) throw new RuntimeException("No records found for this username or email!");
+
+        return loginTokenProvider.refreshAccessToken(refreshToken);
+    }
 }

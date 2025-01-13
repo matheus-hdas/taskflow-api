@@ -8,10 +8,7 @@ import com.matheushdas.taskflowingapi.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -29,5 +26,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login) {
         return ResponseEntity.ok(authService.login(login));
+    }
+
+    @PutMapping("/refresh/{username}")
+    public ResponseEntity refreshToken(@PathVariable String username,
+                                @RequestHeader("Authorization") String refreshToken) {
+        LoginResponse response = authService.refreshToken(username, refreshToken);
+
+        return response == null ?
+                ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!") :
+                ResponseEntity.ok(response);
     }
 }
