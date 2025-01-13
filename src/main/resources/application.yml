@@ -1,16 +1,18 @@
 spring:
   application:
     name: taskflowing-api
-
   datasource:
     url: ${DATABASE_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: none
-
   flyway:
     enabled: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
