@@ -1,2 +1,9 @@
 server:
   port: 8888
+spring:
+  flyway:
+    locations: classpath:db/migration,src/test/resources/db/migration
+security:
+  jwt:
+    secret: 5lrn8df
+    expiration: 3600000
