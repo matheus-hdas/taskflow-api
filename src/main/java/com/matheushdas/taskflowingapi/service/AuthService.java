@@ -6,7 +6,7 @@ import com.matheushdas.taskflowingapi.model.entity.User;
 import com.matheushdas.taskflowingapi.persistence.UserRepository;
 import com.matheushdas.taskflowingapi.util.mapper.UserMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private UserRepository userRepository;
     private UserMapper userMapper;
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public RegisterResponse register(RegisterRequest request) {
         User toSave = userMapper.toEntity(request);
