@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -41,40 +42,40 @@ public class LoginTokenProvider {
     }
 
     public LoginResponse generateAuthorizationToken(String username, List<String> roles) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expiration = LocalDateTime.now().plusSeconds(validityInMilliseconds / 1000);
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + validityInMilliseconds);
         String accessToken = getAccessToken(username, roles, now, expiration);
         String refreshToken = getRefreshToken(username, roles, now);
 
         return new LoginResponse(
                 username,
                 true,
-                now,
-                expiration,
+                LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault()),
+                LocalDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault()),
                 accessToken,
                 refreshToken
         );
     }
 
-    private String getAccessToken(String username, List<String> roles, LocalDateTime now, LocalDateTime expiration) {
+    private String getAccessToken(String username, List<String> roles, Date now, Date expiration) {
         String issuerUrl = ServletUriComponentsBuilder
                 .fromCurrentContextPath().toUriString();
 
         return JWT.create()
                 .withClaim("roles", roles)
-                .withIssuedAt(Instant.from(now))
-                .withExpiresAt(Instant.from(expiration))
+                .withIssuedAt(now)
+                .withExpiresAt(expiration)
                 .withSubject(username)
                 .withIssuer(issuerUrl)
                 .sign(algorithm)
                 .strip();
     }
 
-    private String getRefreshToken(String username, List<String> roles, LocalDateTime now) {
+    private String getRefreshToken(String username, List<String> roles, Date now) {
         return JWT.create()
                 .withClaim("roles", roles)
-                .withIssuedAt(Instant.from(now))
-                .withExpiresAt(Instant.from(now).plusSeconds((validityInMilliseconds * 3) / 1000))
+                .withIssuedAt(now)
+                .withExpiresAt(new Date(now.getTime() + validityInMilliseconds * 2))
                 .withSubject(username)
                 .sign(algorithm)
                 .strip();

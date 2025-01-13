@@ -1,5 +1,7 @@
 package com.matheushdas.taskflowingapi.controller;
 
+import com.matheushdas.taskflowingapi.dto.auth.LoginRequest;
+import com.matheushdas.taskflowingapi.dto.auth.LoginResponse;
 import com.matheushdas.taskflowingapi.dto.auth.RegisterRequest;
 import com.matheushdas.taskflowingapi.dto.auth.RegisterResponse;
 import com.matheushdas.taskflowingapi.service.AuthService;
@@ -18,9 +20,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest register) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(authService.register(registerRequest));
+                .body(authService.register(register));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login) {
+        return ResponseEntity.ok(authService.login(login));
     }
 }
